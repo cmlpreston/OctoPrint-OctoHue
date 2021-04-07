@@ -18,33 +18,35 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 	# Hue Functions
 	pbridge=''
 
-	def build_state(self, red, green=None, blue=None, transitiontime=5, bri=255):
-		state = {"on": True, "xy": None, "transitiontime": transitiontime, "bri": bri }
+	def build_state(self, red, green=None, blue=None, transitiontime=5, bri=255, ct=None):
+		state = {"on": True, "xy": None, "transitiontime": transitiontime, "bri": bri, "ct": ct }
 		self._logger.debug("RGB Input - R:%s G:%s B:%s Bri:%s" % (red, green, blue, bri))
 
-		if isinstance(red, str):
-		# If Red is a string or unicode assume a hex string is passed and convert it to numberic 
-			rstring = red
-			red = int(rstring[1:3], 16)
-			green = int(rstring[3:5], 16)
-			blue = int(rstring[5:], 16)
+		if ct is None:
+			if isinstance(red, str):
+			# If Red is a string or unicode assume a hex string is passed and convert it to numberic 
+				rstring = red
+				red = int(rstring[1:3], 16)
+				green = int(rstring[3:5], 16)
+				blue = int(rstring[5:], 16)
 
-		# We need to convert the RGB value to Yxz.
-		redScale = float(red) / 255.0
-		greenScale = float(green) / 255.0
-		blueScale = float(blue) / 255.0
-		
-		rgb = sRGBColor(redScale, greenScale, blueScale)
-		xyz = convert_color(rgb, XYZColor)
+			# We need to convert the RGB value to Yxz.
+			redScale = float(red) / 255.0
+			greenScale = float(green) / 255.0
+			blueScale = float(blue) / 255.0
+			
+			rgb = sRGBColor(redScale, greenScale, blueScale)
+			xyz = convert_color(rgb, XYZColor)
 
-		x = xyz.get_value_tuple()[0]
-		y = xyz.get_value_tuple()[1]
-		z = xyz.get_value_tuple()[2]
-		#To use only X and Y, we need to noralize using Z i.e value = value / ( X + Y + Z)
-		normx = x / ( x + y + z)
-		normy = y / ( x + y + z) 
+			x = xyz.get_value_tuple()[0]
+			y = xyz.get_value_tuple()[1]
+			z = xyz.get_value_tuple()[2]
+			#To use only X and Y, we need to noralize using Z i.e value = value / ( X + Y + Z)
+			normx = x / ( x + y + z)
+			normy = y / ( x + y + z) 
+			
+			state['xy'] = [normx, normy]
 		
-		state['xy'] = [normx, normy]
 		
 		return self.set_state(state)
 
@@ -86,6 +88,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 					},
 					'PrintStarted' : {
 						'colour':'#FFFFFF',
+						'ct':155,
 						'brightness':255,
 						'turnoff':False
 					},
@@ -133,9 +136,14 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Received Configured Status Event: %s" % event)
 			if self._settings.get(['statusDict'])[event]['turnoff'] == False:
 				brightness = self._settings.get(['statusDict'])[event]['brightness'] if self._settings.get(['statusDict'])[event]['brightness'] else self._settings.get(['defaultbri'])
-				self.build_state(self._settings.get(['statusDict'])[event]['colour'],bri=int(brightness))
+				if self._settings.get(['statusDict'])[event]['ct'] is not None:
+					self.build_state(self._settings.get(['statusDict'])[event]['ct'],bri=int(brightness))
+				else:
+					self.build_state(self._settings.get(['statusDict'])[event]['colour'],bri=int(brightness))
 			else:
 				self.set_state({"on": False})
+
+
 
 	# General Octoprint Hooks Below
 
@@ -146,6 +154,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			lampid="",
 			lampisgroup="",
 			defaultbri=255,
+			defaultct=155, # colour temperature in mired
 			offonshutdown=True,
 			showhuetoggle=True,
 			statusDict=""
@@ -197,21 +206,21 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 		# for details.
 		return dict(
 			OctoHue=dict(
-				displayName="Octohue Plugin",
+				displayName="OctohueCT Plugin",
 				displayVersion=self._plugin_version,
 
 				# version check: github repository
 				type="github_release",
-				user="entrippy",
+				user="cmlpreston",
 				repo="OctoPrint-OctoHue",
 				current=self._plugin_version,
 
 				# update method: pip
-				pip="https://github.com/entrippy/OctoPrint-OctoHue/archive/{target_version}.zip"
+				pip="https://github.com/cmlpreston/OctoPrint-OctoHue/archive/{target_version}.zip"
 			)
 		)
 
-__plugin_name__ = "Octohue"
+__plugin_name__ = "OctohueCT"
 __plugin_pythoncompat__ = ">=2.7,<4" # Compatible with python 2 and 3
 
 def __plugin_load__():
