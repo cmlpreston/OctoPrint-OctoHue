@@ -1,3 +1,5 @@
+This fork is intended to add the option for setting colour temperature for RGBCCT LED lights/strips.
+
 # OctoPrint-OctoHue
 
 Illuminate your print job and signal its status using a Philips Hue light.
