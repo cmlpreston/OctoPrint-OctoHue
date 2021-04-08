@@ -19,10 +19,11 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 	pbridge=''
 
 	def build_state(self, red, green=None, blue=None, transitiontime=5, bri=255, ct=None):
-		state = {"on": True, "xy": None, "transitiontime": transitiontime, "bri": bri, "ct": ct }
-		self._logger.debug("RGB Input - R:%s G:%s B:%s Bri:%s" % (red, green, blue, bri))
+
 
 		if ct is None:
+			state = {"on": True, "xy": None, "transitiontime": transitiontime, "bri": bri}
+			self._logger.debug("RGB Input - R:%s G:%s B:%s Bri:%s" % (red, green, blue, bri))
 			if isinstance(red, str):
 			# If Red is a string or unicode assume a hex string is passed and convert it to numberic 
 				rstring = red
@@ -46,7 +47,8 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			normy = y / ( x + y + z) 
 			
 			state['xy'] = [normx, normy]
-		
+		else:
+			state = {"on": True, "transitiontime": transitiontime, "bri": bri, "ct": ct }
 		
 		return self.set_state(state)
 
@@ -141,10 +143,10 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			self._logger.info("Received Configured Status Event: %s" % event)
 			if self._settings.get(['statusDict'])[event]['turnoff'] == False:
 				brightness = self._settings.get(['statusDict'])[event]['brightness'] if self._settings.get(['statusDict'])[event]['brightness'] else self._settings.get(['defaultbri'])
-				if self._settings.get(['statusDict'])[event]['ct'] is not None:
-					self.build_state(self._settings.get(['statusDict'])[event]['ct'],bri=int(brightness))
-				else:
-					self.build_state(self._settings.get(['statusDict'])[event]['colour'],bri=int(brightness))
+				ct = self._settings.get(['statusDict'])[event]['ct'] if self._settings.get(['statusDict'])[event]['ct'] else None
+				self._logger.info("ct is: %d" % int(ct))
+
+				self.build_state(self._settings.get(['statusDict'])[event]['colour'],bri=int(brightness),ct=ct)
 			else:
 				self.set_state({"on": False})
 

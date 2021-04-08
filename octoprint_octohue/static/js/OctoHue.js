@@ -47,7 +47,7 @@ $(function() {
                 if (ko.isObservable(newStatuses()[i].status)) {
                     self.nestedStatus[newStatuses()[i].status()] = {
                         colour: newStatuses()[i].colour(),
-                        ct: newStatuses()[i].ct(),
+                        ct: newStatuses()[i].ct().extend({ stripQuotes: true}),
                         brightness: newStatuses()[i].brightness().extend({ stripQuotes: true}),
                         turnoff: newStatuses()[i].turnoff()
                     }
@@ -90,7 +90,7 @@ $(function() {
         self.onBeforeBinding = function () {
             self.settings = self.settingsViewModel.settings;
             self.ownSettings = self.settings.plugins.octohue;
-            self.statusDict = self.ownSettings.statusDict
+            self.statusDict = self.ownSettings.statusDict;
 
             self.flatStatus = self.flattenstatus(self.statusDict);
             self.flatStatus.extend({
