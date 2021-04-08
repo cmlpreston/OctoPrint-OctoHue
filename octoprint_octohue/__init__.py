@@ -78,11 +78,13 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 				self._settings.set(["statusDict"], {
 					'Connected' : {
 						'colour':'#FFFFFF',
+						'ct':155,
 						'brightness':255,
 						'turnoff':False
 					},
 					'Disconnected': {
 						'colour':'',
+						'ct':155,
 						'brightness':"",
 						'turnoff':True
 					},
@@ -94,16 +96,19 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 					},
 					'PrintResumed' : {
 						'colour':'#FFFFFF',
+						'ct':155,
 						'brightness':255,
 						'turnoff':False
 					},
 					'PrintDone': {
 						'colour':'#33FF36',
+						'ct':155,
 						'brightness':255,
 						'turnoff':False
 					},
 					'PrintFailed':{
 						'colour':'#FF0000',
+						'ct':155,
 						'brightness':255,
 						'turnoff':False
 					}
@@ -177,6 +182,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			lampid=self._settings.get(["lampid"]),
 			lampisgroup=self._settings.get(["lampisgroup"]),
 			defaultbri=self._settings.get(["defaultbri"]),
+			defaultct=self._settings.get(["defaultct"]),
 			offonshutdown=self._settings.get(["offonshutdown"]),
 			showhuetoggle=self._settings.get(["showhuetoggle"]),
 			statusDict=self._settings.get(["statusDict"])
