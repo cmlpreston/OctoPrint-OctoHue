@@ -54,8 +54,8 @@ $(function() {
                 } else { 
                     self.nestedStatus[newStatuses()[i].status] = {
                         colour: newStatuses()[i].colour,
-                        brightness: newStatuses()[i].brightness,
                         ct: newStatusus()[i].ct,
+                        brightness: newStatuses()[i].brightness,
                         turnoff: newStatuses()[i].turnoff
                     }
                 }
@@ -67,8 +67,8 @@ $(function() {
             var statusObj = {
                 status: ko.observable(''),
                 colour: ko.observable(''),
-                brightness: ko.observable(''),
                 ct: ko.observable(''),
+                brightness: ko.observable(''),
                 turnoff: ko.observable('')
             };
 
