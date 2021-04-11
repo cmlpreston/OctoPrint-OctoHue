@@ -144,8 +144,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			if self._settings.get(['statusDict'])[event]['turnoff'] == False:
 				brightness = self._settings.get(['statusDict'])[event]['brightness'] if self._settings.get(['statusDict'])[event]['brightness'] else self._settings.get(['defaultbri'])
 				ct = self._settings.get(['statusDict'])[event]['ct'] if self._settings.get(['statusDict'])[event]['ct'] else None
-				self._logger.info("ct is: %d" % int(ct)) if not None else self._logger.info("ct is None") 
-
+				# self._logger.info("ct is: %d" % int(ct)) if not None else self._logger.info("ct is None") 
 				self.build_state(self._settings.get(['statusDict'])[event]['colour'],bri=int(brightness),ct=ct)
 			else:
 				self.set_state({"on": False})
