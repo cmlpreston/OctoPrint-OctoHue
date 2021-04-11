@@ -72,6 +72,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 		else:
 			self._logger.debug("set_state state is %s" % state)
 			l_id = self._settings.get(['lampid'])
+			
 			if l_id is not None: 
 				self._logger.debug("l_id is" % l_id) 
 			else: 
