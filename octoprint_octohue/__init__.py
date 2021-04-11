@@ -50,6 +50,11 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 		else:
 			#self._logger.debug("ct build_state state is %s" % self._state )
 			state = {"on": True, "transitiontime": transitiontime, "bri": bri, "ct": ct }
+		
+		if state is not None:
+			self._logger.debug("build_state state is %s" % self._state )
+		else: 
+			self._logger.debug("build_state state is None")
 		return self.set_state(state)
 
 	def get_state(self):
@@ -149,7 +154,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 				else:
 						self._logger.debug("ct is %d" % int(ct))
 				# self._logger.info("ct is: %d" % int(ct)) if not None else self._logger.info("ct is None") 
-				self.build_state(self._settings.get(['statusDict'])[event]['colour'],bri=int(brightness),ct=ct)
+				self.build_state(self._settings.get(['statusDict'])[event]['colour'],bri=int(brightness),ct=int(ct))
 			else:
 				self.set_state({"on": False})
 
