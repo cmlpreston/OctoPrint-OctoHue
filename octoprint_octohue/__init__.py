@@ -71,7 +71,12 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			self.pbridge.groups[self._settings.get(['lampid'])].action(**state)
 		else:
 			self._logger.debug("set_state state is %s" % state)
-			self.pbridge.lights[self._settings.get(['lampid'])].state(**state)
+			l_id = self._settings.get(['lampid'])
+			if l_id is not None: 
+				self._logger.debug("l_id is" % l_id) 
+			else: 
+					self._logger.debug("l_id is None")
+			self.pbridge.lights[l_id].state(**state)
 
 	def toggle_state(self):
 		if self.get_state():
