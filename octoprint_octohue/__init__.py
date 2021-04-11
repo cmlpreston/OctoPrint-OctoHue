@@ -70,6 +70,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 		if self._settings.get(['lampisgroup']) == True:
 			self.pbridge.groups[self._settings.get(['lampid'])].action(**state)
 		else:
+			self._logger.debug("set_state state is %s" % state)
 			self.pbridge.lights[self._settings.get(['lampid'])].state(**state)
 
 	def toggle_state(self):
