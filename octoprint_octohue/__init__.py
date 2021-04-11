@@ -19,7 +19,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 	pbridge=''
 
 	def build_state(self, red, green=None, blue=None, transitiontime=5, bri=255, ct=None):
-		self._logger.debug("ct is %d" % ct ) if ct is not None else self._logger.debug("ct is None")
+		#self._logger.debug("ct is %d" % ct ) if ct is not None else self._logger.debug("ct is None")
 		if ct is None:
 			state = {"on": True, "xy": None, "transitiontime": transitiontime, "bri": bri}
 			self._logger.debug("RGB Input - R:%s G:%s B:%s Bri:%s" % (red, green, blue, bri))
