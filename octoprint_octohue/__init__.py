@@ -19,8 +19,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 	pbridge=''
 
 	def build_state(self, red, green=None, blue=None, transitiontime=5, bri=255, ct=None):
-
-
+		self._logger.debug("ct is %d" % ct ) if ct is not None else self._logger.debug("ct is None")
 		if ct is None:
 			state = {"on": True, "xy": None, "transitiontime": transitiontime, "bri": bri}
 			self._logger.debug("RGB Input - R:%s G:%s B:%s Bri:%s" % (red, green, blue, bri))
@@ -47,9 +46,10 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			normy = y / ( x + y + z) 
 			
 			state['xy'] = [normx, normy]
+			self._logger.debug("xy build_state state is %s" % self._state )
 		else:
+			self._logger.debug("ct build_state state is %s" % self._state )
 			state = {"on": True, "transitiontime": transitiontime, "bri": bri, "ct": ct }
-		
 		return self.set_state(state)
 
 	def get_state(self):
