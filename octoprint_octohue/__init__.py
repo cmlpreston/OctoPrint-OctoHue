@@ -52,7 +52,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			state = {"on": True, "transitiontime": transitiontime, "bri": bri, "ct": ct }
 		
 		if state is not None:
-			self._logger.debug("build_state state is %s" % self._state )
+			self._logger.debug("build_state state is %s" % state )
 		else: 
 			self._logger.debug("build_state state is None")
 		return self.set_state(state)
