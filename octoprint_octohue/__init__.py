@@ -46,7 +46,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			normy = y / ( x + y + z) 
 			
 			state['xy'] = [normx, normy]
-			self._logger.debug("xy build_state state is %s" % self._state )
+			# self._logger.debug("xy build_state state is %s" % self._state ) if self._state is not None
 		else:
 			self._logger.debug("ct build_state state is %s" % self._state )
 			state = {"on": True, "transitiontime": transitiontime, "bri": bri, "ct": ct }
