@@ -56,7 +56,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			# adjust state if ct is within 155 to 500 range
 			if 155 <= debug_ct <= 500: 
 				self._logger.debug("Adjusting state to use CT instead of XY")
-				state['xy'] = None
+				del state['xy']
 				state['ct'] = int(debug_ct)
 
 			# self._logger.debug("xy build_state state is %s" % self._state ) if self._state is not None
