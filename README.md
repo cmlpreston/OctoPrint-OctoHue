@@ -1,5 +1,12 @@
 This fork is intended to add the option for setting colour temperature for RGBCCT LED lights/strips.
 
+Colour temperature may now be added in settings. If tempeature is set, it is used instead of specified colour.
+
+Via: https://stackoverflow.com/questions/64498972/how-to-get-xy-value-from-ct-in-philips-hue
+
+Hue CT may be calculated from XY value. Will integrate check of XY to see if may be represented via CT value.
+
+
 # OctoPrint-OctoHue
 
 Illuminate your print job and signal its status using a Philips Hue light.

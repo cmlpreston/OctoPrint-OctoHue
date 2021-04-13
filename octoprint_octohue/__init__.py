@@ -5,7 +5,7 @@ from colormath.color_objects import XYZColor, sRGBColor
 from colormath.color_conversions import convert_color
 import octoprint.plugin
 import flask
-
+from HueXTtoCT import *
 
 class OctohuePlugin(octoprint.plugin.StartupPlugin,
 					octoprint.plugin.ShutdownPlugin,
