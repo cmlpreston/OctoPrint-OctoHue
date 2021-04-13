@@ -51,7 +51,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			self._logger.debug("x:%f y:%f, ct is %f" % (normx,normy,calc_ct))
 
 			# set state if ct is within 155 to 500 range
-			if 155 <= calc_ct <= 500: 
+			if 155 <= calc_ct <= 200: 
 				self._logger.debug("Adjusting state to use CT instead of XY")
 				del state['xy']
 				state['ct'] = int(calc_ct)
