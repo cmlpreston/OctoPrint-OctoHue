@@ -46,20 +46,18 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			normx = x / ( x + y + z)
 			normy = y / ( x + y + z) 
 			
-			state['xy'] = [normx, normy]
+			calc_ct = calculate_PhillipsHueCT_withCCT(HueXYtoCT.calculate_CCT_withHueXY(normx,normy))
 
-			debug_cct = HueXYtoCT.calculate_CCT_withHueXY(normx,normy)
-			debug_ct = calculate_PhillipsHueCT_withCCT(debug_cct)
+			self._logger.debug("x:%f y:%f, ct is %f" % (normx,normy,calc_ct))
 
-			self._logger.debug("x:%f y:%f, cct is %f and ct is %f" % (normx,normy,debug_cct,debug_ct))
-
-			# adjust state if ct is within 155 to 500 range
-			if 155 <= debug_ct <= 500: 
+			# set state if ct is within 155 to 500 range
+			if 155 <= calc_ct <= 500: 
 				self._logger.debug("Adjusting state to use CT instead of XY")
 				del state['xy']
-				state['ct'] = int(debug_ct)
+				state['ct'] = int(calc_ct)
+			else:
+				state['xy'] = [normx, normy]
 
-			# self._logger.debug("xy build_state state is %s" % self._state ) if self._state is not None
 		else:
 			#self._logger.debug("ct build_state state is %s" % self._state )
 			state = {"on": True, "transitiontime": transitiontime, "bri": int(bri), "ct": int(ct) }
