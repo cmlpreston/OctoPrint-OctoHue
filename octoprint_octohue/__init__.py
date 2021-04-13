@@ -56,7 +56,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			# self._logger.debug("xy build_state state is %s" % self._state ) if self._state is not None
 		else:
 			#self._logger.debug("ct build_state state is %s" % self._state )
-			state = {"on": True, "transitiontime": transitiontime, "bri": bri, "ct": ct }
+			state = {"on": True, "transitiontime": transitiontime, "bri": int(bri), "ct": int(ct) }
 		
 		if state is not None:
 			self._logger.debug("build_state state is %s" % state )
@@ -83,7 +83,7 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			if l_id is not None: 
 				self._logger.debug("l_id is %s" % l_id) 
 			else: 
-					self._logger.debug("l_id is None")
+				self._logger.debug("l_id is None")
 			self.pbridge.lights[l_id].state(**state)
 
 	def toggle_state(self):
