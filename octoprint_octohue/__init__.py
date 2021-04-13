@@ -5,7 +5,8 @@ from colormath.color_objects import XYZColor, sRGBColor
 from colormath.color_conversions import convert_color
 import octoprint.plugin
 import flask
-from HueXTtoCT import *
+from octoprint_octohue import HueXYtoCT
+from octoprint_octohue.HueXYtoCT import calculate_PhillipsHueCT_withCCT
 
 class OctohuePlugin(octoprint.plugin.StartupPlugin,
 					octoprint.plugin.ShutdownPlugin,
@@ -46,6 +47,12 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 			normy = y / ( x + y + z) 
 			
 			state['xy'] = [normx, normy]
+
+			debug_cct = HueXYtoCT.calculate_CCT_withHueXY(normx,normy)
+			debug_ct = calculate_PhillipsHueCT_withCCT(debug_cct)
+
+			self._logger.debug("x:%f y:%f, cct is %f and ct is %f" % (normx,normy,debug_cct,debug_ct))
+
 			# self._logger.debug("xy build_state state is %s" % self._state ) if self._state is not None
 		else:
 			#self._logger.debug("ct build_state state is %s" % self._state )
