@@ -53,6 +53,11 @@ class OctohuePlugin(octoprint.plugin.StartupPlugin,
 
 			self._logger.debug("x:%f y:%f, cct is %f and ct is %f" % (normx,normy,debug_cct,debug_ct))
 
+			# call ourselves if ct is within 155 to 500 range
+			if debug_ct in range(155,500): 
+				self._logger.debug("Calling ourselves to use CT instead of XY")
+				self.build_state(self,ct=int(debug_ct),bri=(int)bri)
+
 			# self._logger.debug("xy build_state state is %s" % self._state ) if self._state is not None
 		else:
 			#self._logger.debug("ct build_state state is %s" % self._state )
